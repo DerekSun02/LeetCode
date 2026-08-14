@@ -33,6 +33,8 @@ class Solution {
                 q = q.next; 
             }
         }
+        // 清空p.next,避免把重复元素加入dummy队列
+        p.next = null; 
         return dummy.next; 
     }
 }

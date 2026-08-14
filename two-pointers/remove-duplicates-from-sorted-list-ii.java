@@ -10,22 +10,29 @@
  */
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-        ListNode dummyDup = new ListNode(101), dummyUniq = new ListNode(101);
-        ListNode curDup = dummyDup, curUniq = dummyUniq; 
+        // 快慢指针
+        ListNode dummy = new ListNode();
+        ListNode p = dummy, q = head; 
 
-        while (head != null){
-            // 发现重复元素,加入重复链表。
-            if (head.val == curDup.val || (head.next != null && head.next.val == head.val)){
-                curDup.next = head;
-                curDup = curDup.next;
+        while(q != null){
+            // 发现重复元素 
+            if (q.next != null && q.next.val == q.val){
+                // while循环跳过一整段重复元素
+                while (q.next != null && q.next.val == q.val){
+                    q = q.next; 
+                }
+                if (q == null){
+                    // 清空p.next,避免把重复元素加入dummy队列
+                    p.next = null; 
+                }
+                q = q.next; 
             }else{
-                // 不重复元素加入非重复链表. 
-                curUniq.next = head; 
-                curUniq = curUniq.next; 
+                // 不重复元素加入dummy队列
+                p.next = q;
+                p = p.next;
+                q = q.next; 
             }
-            head = head.next; 
         }
-        curUniq.next = null; 
-        return dummyUniq.next; 
+        return dummy.next; 
     }
 }

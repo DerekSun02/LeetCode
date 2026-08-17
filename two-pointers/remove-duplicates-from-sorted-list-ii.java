@@ -10,31 +10,19 @@
  */
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-        // 快慢指针
-        ListNode dummy = new ListNode();
-        ListNode p = dummy, q = head; 
-
-        while(q != null){
-            // 发现重复元素 
-            if (q.next != null && q.next.val == q.val){
-                // while循环跳过一整段重复元素
-                while (q.next != null && q.next.val == q.val){
-                    q = q.next; 
-                }
-                if (q == null){
-                    // 清空p.next,避免把重复元素加入dummy队列
-                    p.next = null; 
-                }
-                q = q.next; 
-            }else{
-                // 不重复元素加入dummy队列
-                p.next = q;
-                p = p.next;
-                q = q.next; 
-            }
+        if (head == null || head.next == null){
+            return head; 
         }
-        // 清空p.next,避免把重复元素加入dummy队列
-        p.next = null; 
-        return dummy.next; 
+        if (head.val != head.next.val){
+            // 如果头节点和身后节点的值不同，则对之后链表去重即可。 
+            head.next = deleteDuplicates(head.next);
+            return head; 
+        }
+        // 如果头节点和身后节点的值相同，则说明从head开始存在若干重复节点
+        while (head.next != null && head.val == head.next.val){
+            head = head.next; 
+        }
+        // 直接下一个不重复的节点开始，删除最后一个重复节点
+        return deleteDuplicates(head.next); 
     }
 }
